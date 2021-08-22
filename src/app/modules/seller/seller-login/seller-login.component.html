@@ -1,11 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-4">
-      <form
-        class="form-login pt-5 pb-3"
-        [formGroup]="sellerLoginForm"
-        (ngSubmit)="onSubmit()"
-      >
+      <form class="form-login pt-5 pb-3" [formGroup]="sellerLoginForm" (ngSubmit)="onLogin()">
         <!-- email -->
         <div class="form-group">
           <div class="form-row">
@@ -15,16 +11,20 @@
                 formControlName="email"
                 class="form-control"
                 placeholder="Email Address"
-                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                [ngClass]="{ 'is-invalid': submitted && sellerLoginForm.value.email.errors }"
+                required
               />
             </div>
             <!-- email error -->
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Email is required</div>
-              <div *ngIf="f.email.errors.email">
+            <div *ngIf="sellerLoginForm.value.email.errors" class="invalid-feedback">
+              <div *ngIf="sellerLoginForm.value.email.errors.required">Email is required</div>
+              <div *ngIf="sellerLoginForm.value.email.errors.email">
                 Email must be a valid email address
               </div>
             </div>
+            
+            <div *ngIf="errors" class="invalid-feedback" [ngClass]="errors ? 'errors' : ''">{{usererror}}</div>
+            <!-- <div class="invalid-feedback" [ngClass]="!errors ? 'errors' : ''">there are errors</div> -->
           </div>
         </div>
         <!-- password -->
@@ -36,15 +36,23 @@
               formControlName="password"
               placeholder="Password"
               class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+              [ngClass]="{ 'is-invalid': submitted && sellerLoginForm.value.password.errors }"
             />
             <!-- password errors -->
             <div
-              *ngIf="submitted && f.password.errors"
+              *ngIf="submitted && sellerLoginForm.value.password.errors"
               class="invalid-feedback"
             >
-              <div *ngIf="f.password.errors.required">Password is required</div>
-              <div *ngIf="f.password.errors.minlength">
+<!-- <div *ngIf="myForm.controls['username'].invalid && (myForm.controls['username'].dirty || myForm.controls['username'].touched)" class="alert"> -->
+
+              <!-- <div *ngIf="sellerLoginForm.value.password.errors.required">Password is required</div> -->
+              <div 
+                [ngClass]="!sellerLoginForm.valid ? 'error' : ''" 
+                *ngIf="sellerLoginForm.controls['password'].invalid &&
+                sellerLoginForm.controls['password'].touched"
+              >Password is required</div>
+
+              <div *ngIf="sellerLoginForm.value.password.errors.minlength">
                 Password must be at least 6 characters
               </div>
             </div>
@@ -54,7 +62,6 @@
         <div class="form-group form-check checkbox mb-3">
           <input
             type="checkbox"
-            formControlName="checkbox"
             id="rememberMe"
             class="form-check-input"
           />
@@ -64,6 +71,7 @@
         <button
           class="btn btn-lg btn-primary btn-block btn-default"
           type="submit"
+          
         >
           Sign in
         </button>
@@ -84,3 +92,9 @@
     </div>
   </div>
 </div>
+
+<!-- <form [formGroup]="sellerLoginForm" (ngSubmit)="onLogin()">
+  <input type="text" formControlName="email" placeholder="Email" required>
+  <input type="password" formControlName="password" placeholder="Password" required>
+  <input type="submit" value="Login" [disabled]="!sellerLoginForm.valid">
+</form> -->

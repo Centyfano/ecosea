@@ -3,10 +3,10 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">
-        <h2>{{ title }}</h2>
+        <h2>Register</h2>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!-- step 1 -->
-          <div class="step1" *ngIf="step === 1">
+          <div class="step1">
             <h3>Account Details</h3>
             <div class="form-group">
               <div class="form-row">
@@ -15,55 +15,24 @@
                   <label class="sr-only">First Name</label>
                   <input
                     type="text"
-                    formControlName="sellerName"
+                    formControlName="name"
                     placeholder="Name"
                     class="form-control"
                     [ngClass]="{
-                      'is-invalid': submitted && f.sellerName.errors
+                      'is-invalid': submitted && f.name.errors
                     }"
                   />
                 </div>
                 <!-- seller name error -->
                 <div
-                  *ngIf="submitted && f.sellerName.errors"
+                  *ngIf="submitted && f.name.errors"
                   class="invalid-feedback"
                 >
-                  <div *ngIf="f.sellerName.errors.required">
+                  <div *ngIf="f.name.errors.required">
                     Name is required
                   </div>
                 </div>
-
-                <!-- seller type -->
-                <div class="col">
-                  <label class="sr-only">Seller Type</label>
-                  <select
-                    class="form-control"
-                    formControlName="sellerType"
-                    [ngClass]="{
-                      'is-invalid': submitted && f.sellerType.errors
-                    }"
-                  >
-                    <option value="" disabled selected hidden>
-                      Seller Type
-                    </option>
-                    <option
-                      *ngFor="let type of sellerTypes"
-                      [value]="type"
-                      class="text-capitalize"
-                    >
-                      {{ type }}
-                    </option>
-                  </select>
-                </div>
-                <!-- seller type -->
-                <div
-                  *ngIf="submitted && f.sellerType.errors"
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f.sellerType.errors.required">
-                    Last Name is required
-                  </div>
-                </div>
+               
               </div>
             </div>
             <!-- email -->
@@ -83,29 +52,19 @@
                 </div>
               </div>
             </div>
-            <!-- confirm email -->
+            <!-- phone -->
             <div class="form-group">
-              <label class="sr-only">Confirm Email</label>
+              <label class="sr-only">Phone Number</label>
               <input
-                type="email"
-                formControlName="confirmEmail"
-                placeholder="Confirm Email Address"
+                type="number"
+                formControlName="phone"
+                placeholder="Phone Number"
                 class="form-control"
                 [ngClass]="{
-                  'is-invalid': submitted && f.confirmEmail.errors
+                  'is-invalid': submitted && f.phone.errors
                 }"
               />
-              <div
-                *ngIf="submitted && f.confirmEmail.errors"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f.confirmEmail.errors.required">
-                  Confirm Email is required
-                </div>
-                <div *ngIf="f.confirmEmail.errors.mustMatch">
-                  Emails must match
-                </div>
-              </div>
+
             </div>
             <!-- password -->
             <div class="form-group">
@@ -134,218 +93,25 @@
               <label class="sr-only">Confirm Password</label>
               <input
                 type="password"
-                formControlName="confirmPassword"
+                formControlName="password_confirmation"
                 placeholder="Confirm Password"
                 class="form-control"
                 [ngClass]="{
-                  'is-invalid': submitted && f.confirmPassword.errors
+                  'is-invalid': submitted && f.password_confirmation.errors
                 }"
               />
               <div
-                *ngIf="submitted && f.confirmPassword.errors"
+                *ngIf="submitted && f.password_confirmation.errors"
                 class="invalid-feedback"
               >
-                <div *ngIf="f.confirmPassword.errors.required">
+                <div *ngIf="f.password_confirmation.errors.required">
                   Confirm Password is required
                 </div>
-                <div *ngIf="f.confirmPassword.errors.mustMatch">
+                <div *ngIf="f.password_confirmation.errors.mustMatch">
                   Passwords must match
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- step 2  -->
-          <div class="step-2" *ngIf="step === 2">
-            <h3>Business Information</h3>
-            <!-- shop name -->
-            <div class="form-group">
-              <label class="sr-only">Shop Name</label>
-              <input
-                type="text"
-                formControlName="shopName"
-                placeholder="Shop Name"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && f.shopName.errors
-                }"
-              />
-            </div>
-
-            <!-- location -->
-            <div class="form-group">
-              <label class="sr-only">Location</label>
-              <input
-                type="text"
-                formControlName="location"
-                placeholder="Location"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && f.location.errors
-                }"
-              />
-            </div>
-
-            <!-- kra -->
-            <div class="form-group">
-              <label class="sr-only">KRA Pin</label>
-              <input
-                type="text"
-                formControlName="kraPin"
-                placeholder="KRA Pin"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && f.kraPin.errors
-                }"
-              />
-            </div>
-
-            <!-- category -->
-            <div class="form-group">
-              <select
-                class="form-control"
-                formControlName="sellerCategory"
-                [ngClass]="{
-                  'is-invalid': submitted && f.sellerCategory.errors
-                }"
-              >
-                <option value="" disabled selected hidden>Category</option>
-                <option
-                  *ngFor="let category of categories"
-                  [value]="category"
-                  class="text-capitalize"
-                >
-                  {{ category }}
-                </option>
-              </select>
-              <div
-                *ngIf="submitted && f.sellerCategory.errors"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f.sellerCategory.errors.required">
-                  Category is required
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- step 3 -->
-          <div class="step-3 mb-4" *ngIf="step === 3">
-            <h3>Mode of Payment</h3>
-            <!-- Bank -->
-            <div class="form-group">
-              <select
-                class="form-control"
-                formControlName="bank"
-                [ngClass]="{
-                  'is-invalid': submitted && f.bank.errors
-                }"
-              >
-                <option value="" disabled selected hidden>Bank</option>
-                <option *ngFor="let bank of banks" [value]="bank">
-                  {{ bank }}
-                </option>
-              </select>
-              <div *ngIf="submitted && f.bank.errors" class="invalid-feedback">
-                <div *ngIf="f.bank.errors.required">Bank is required</div>
-              </div>
-            </div>
-            <!-- Branch -->
-            <div class="form-group">
-              <select
-                class="form-control"
-                formControlName="bankBranch"
-                [ngClass]="{
-                  'is-invalid': submitted && f.bankBranch.errors
-                }"
-              >
-                <option value="" disabled selected hidden>Branch</option>
-                <option *ngFor="let branch of branches" [value]="branch">
-                  {{ branch }}
-                </option>
-              </select>
-              <div
-                *ngIf="submitted && f.bankBranch.errors"
-                class="invalid-feedback"
-              >
-                <div *ngIf="f.bankBranch.errors.required">
-                  Branch is required
-                </div>
-              </div>
-            </div>
-            <!-- Account number / till -->
-            <div class="form-group">
-              <label class="sr-only">Account Number / Till Number</label>
-              <input
-                type="number"
-                formControlName="account"
-                placeholder="Account Number / Till Number"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && f.account.errors
-                }"
-              />
-            </div>
-            <div *ngIf="submitted && f.account.errors" class="invalid-feedback">
-              <div *ngIf="f.account.errors.required">
-                Account or Till Number is required
-              </div>
-              <div *ngIf="f.account.errors.min">
-                Account / Till Number cannot be negative.
-              </div>
-              <div *ngIf="f.account.errors.minlength">
-                Account / Till Number must be at least 6 characters
-              </div>
-            </div>
-          </div>
-
-          <!-- submit -->
-          <!-- submit step 1 -->
-          <div
-            class="form-group d-flex justify-content-around"
-            *ngIf="step === 1"
-          >
-            <button type="submit" class="btn btn-danger" (click)="onCancel()">
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary" (click)="onNext()">
-              Next
-            </button>
-          </div>
-          <!-- submit step 2 -->
-          <div
-            class="form-group d-flex justify-content-around"
-            *ngIf="step === 2"
-          >
-            <button type="submit" class="btn btn-danger" (click)="onCancel()">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              (click)="onPrevious()"
-            >
-              Previous
-            </button>
-            <button type="button" class="btn btn-primary" (click)="onNext()">
-              Next
-            </button>
-          </div>
-          <!-- submit step 3 -->
-          <div
-            class="form-group d-flex justify-content-around"
-            *ngIf="step === 3"
-          >
-            <button type="submit" class="btn btn-danger" (click)="onCancel()">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              (click)="onPrevious()"
-            >
-              Previous
-            </button>
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
         </form>

@@ -28,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
+
 const routes: Routes = [
   { path: '', component: SellerAccountComponent },
   { path: 'sales', component: SellerSalesComponent },
@@ -81,5 +82,6 @@ const routes: Routes = [
     MatIconModule,
     MatDividerModule,
   ],
+
 })
 export class SellerAccountModule {}

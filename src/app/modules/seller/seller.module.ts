@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SellerRegisterComponent } from './seller-register/seller-register.component';
 import { SellerLoginComponent } from './seller-login/seller-login.component';
 import { SellerDefaultComponent } from './seller-default/seller-default.component';
+import { SellerGuard } from './auth/seller.guard';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
           import('./seller-account/seller-account.module').then(
             (m) => m.SellerAccountModule
           ),
+        canActivate: [SellerGuard],
       },
       { path: 'login', component: SellerLoginComponent },
       { path: 'register/:step', component: SellerRegisterComponent },
@@ -42,6 +44,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     SharedModule,
     RouterModule.forChild(routes),
+  ],
+  providers: [
+    SellerGuard,
   ],
 })
 export class SellerModule {}

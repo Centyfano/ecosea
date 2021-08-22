@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container" *ngIf="loaded">
   <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-12 py-4">
       <!-- user -->
       <div class="navbar-brand mb-3">
-        <h2 class="m-0">Welcome John Doe</h2>
-        <p class="m-0 py-2">johndoe@gmail.com</p>
+        <h2 class="m-0">Welcome {{seller.seller_name}}</h2>
+        <p class="m-0 py-2"> {{seller.seller_email}} </p>
       </div>
       <!-- Collapsible list -->
       <div class="panel-group" role="tablist">
@@ -79,7 +79,7 @@
             aria-labelledby="collapseListGroupHeading2"
           >
             <ul class="list-group">
-              <li class="list-group-item" [routerLink]="['./profile']">
+              <li class="list-group-item" [routerLink]="['./profile']"[queryParams]="{seller:seller | json}">
                 Profile
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
