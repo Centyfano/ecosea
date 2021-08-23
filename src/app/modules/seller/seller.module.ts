@@ -25,8 +25,8 @@ const routes: Routes = [
         canActivate: [SellerGuard],
       },
       { path: 'login', component: SellerLoginComponent },
-      { path: 'register/:step', component: SellerRegisterComponent },
-      { path: 'register', redirectTo: 'register/1', pathMatch: 'full' },
+      { path: 'register', component: SellerRegisterComponent },
+      { path: 'register', redirectTo: '/register', pathMatch: 'full' },
     ],
   },
 ];

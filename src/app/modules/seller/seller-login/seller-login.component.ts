@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AccountSellerService } from 'src/app/services/account-seller.service';
+import { Router } from '@angular/router';
+import { SellerAuthService } from '../auth/seller-auth.service';
 
 @Component({
   selector: 'app-seller-login',
@@ -21,7 +21,7 @@ export class SellerLoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private sellerService: AccountSellerService,
+    private sellerAuthService: SellerAuthService,
     private router: Router
   ) {}
 
@@ -40,20 +40,20 @@ export class SellerLoginComponent implements OnInit {
 
     this.loading = true;
 
-    this.sellerService.login(this.sellerLoginForm.value).subscribe(
-      (token: any) => {
+    this.sellerAuthService.login(this.sellerLoginForm.value).subscribe(
+      (res: any) => {
+        console.log(res);
         // this.sellerService.userToken = token;
-        console.log('token is', token);
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', res.token);
         this.router.navigateByUrl('/seller/account');
 
         // this.sellerService.userToken
       },
       (err) => {
-        this.loading = false;
-        this.errors = err;
+        this.errors = err.errors;
         this.usererror = this.errors.meta.email[0];
-        console.log(this.errors);
+        this.loading = false;        
+        // console.log(this.errors);
       }
     );
   }

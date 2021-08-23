@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AccountSellerService } from 'src/app/services/account-seller.service';
 import { Location } from "@angular/common";
 import { Router } from '@angular/router';
+import { SellerAuthService } from '../../auth/seller-auth.service';
 
 export interface Seller {
   name: string;
@@ -21,7 +21,7 @@ export class SellerDetailsComponent implements OnInit {
   autofocus = 'false' || 'autofocus';
   constructor(
     private fb: FormBuilder,
-    public sellerService: AccountSellerService,
+    public sellerAuthService: SellerAuthService,
     private location: Location,
     private router: Router
   ) { }
@@ -41,7 +41,7 @@ export class SellerDetailsComponent implements OnInit {
 
   onSubmit() {
     console.log(this.editForm.value);
-    this.sellerService.editSeller(this.editForm.value).subscribe(
+    this.sellerAuthService.editSeller(this.editForm.value).subscribe(
       (res) => {
         console.log(res);
         this.location.back();

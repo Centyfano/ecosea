@@ -5,17 +5,12 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError, EMPTY, NextObserver } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import {
-  LoginSeller,
-  CreateSeller,
-  EditSeller,
-} from '../modules/models/seller';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { PostProduct, Product } from '../modules/models/product';
 
 const url = 'https://peaceful-beyond-74495.herokuapp.com/api/seller',
-  authUrl = `${url}/auth/seller`;
-
+  prodUrl = `${url}/products`;
 @Injectable({
   providedIn: 'root',
 })
@@ -26,76 +21,83 @@ export class AccountSellerService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  // get seller
-  public getToken(): string {
-    return localStorage.getItem('token') || '';
-  }
-
-  isLoggedIn() {
-    return !!localStorage.getItem('token');
-  }
-
-  // register
-  register(user: CreateSeller): Observable<CreateSeller> {
-    console.log(user);
-    return this.http
-      .post<CreateSeller>(`${url}/register`, user, this.options)
-      .pipe(
-        tap((data: any) => {
-          console.log(data);
-        }),
-        catchError(this.handleError)
-      );
-  }
-
-  // login
-  login(user: LoginSeller): Observable<LoginSeller> {
-    return this.http
-      .post(`${url}/login`, user, { responseType: 'text' as const })
-      .pipe(
-        tap((res: any) => {
-          // console.log(res)
-          return res;
-        }),
-        catchError(this.handleError)
-      );
-  }
-
-  // (`${url}/login`, user, { responseType: 'text' }).pipe(catchError(this.handleError));
-
-  // AUTH
-
-  getSeller(): Observable<any> {
-    return this.http.get(authUrl).pipe(
-      tap((res) => {
-        return res;
+  /**
+   * Get Products
+   */
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(prodUrl).pipe(
+      map((res: any) => {
+        const products = res.data.map((prod: any) => {
+          // console.log(prod);
+          return {
+            product_id: prod.data.product_id,
+            product_name: prod.data.attributes.product_name,
+            product_price: prod.data.attributes.product_price,
+            currency: prod.data.attributes.currency,
+            discount_percent: prod.data.attributes.discount_percent,
+            quantity_in_stock: prod.data.attributes.quantity_in_stock,
+            product_video: prod.data.attributes.product_video,
+            product_details: prod.data.attributes.product_details,
+            product_unit: prod.data.attributes.product_unit,
+            active: prod.data.attributes.active,
+            minimum_order_quantity: prod.data.attributes.minimum_order_quantity,
+            product_category_id: prod.data.attributes.product_category_id,
+            cover_image: prod.data.attributes.cover_image.data.attributes.path,
+            images: prod.data.attributes.productImages.data.map(
+              (image: any) => {
+                return image.data.attributes.path;
+              }
+            ),
+          };
+        });
+        // console.log(products);
+        return products;
+      }),
+      tap((_) => {
+        console.log(`Fetched products`);
       }),
       catchError(this.handleError)
     );
   }
 
   /**
-   * Edit Seller details.
-   * @param details : {name: string, phone: number}
+   * Create Product
+   * @param data 
+   * @returns observable
    */
-  editSeller(details: EditSeller): Observable<EditSeller> {
-    return this.http.patch<EditSeller>(authUrl, details, this.options).pipe(
-      tap((res) => {
-        console.log(res);
-      }),
+  createProduct(data: PostProduct): Observable<PostProduct> {
+    return this.http.post<PostProduct>(prodUrl, data, this.options).pipe(
+      tap((res: any) => console.log(res)),
       catchError(this.handleError)
     );
   }
 
-  // logout
-  logout(): Observable<any> {
-    return this.http
-      .post(`${url}/logout`, {})
-      .pipe(catchError(this.handleError));
+  /**
+   * Edit Product
+   * @param product payload
+   * @param id ID
+   * @returns observable
+   */
+  editProduct(product: any, id: any): Observable<any> {
+    return this.http.patch(`${prodUrl}/${id}`, product).pipe(
+      tap((res: any) => console.log(res)),
+      catchError(this.handleError)
+    );
   }
 
-  // handle error
-  private handleError(error: HttpErrorResponse) {
+  deleteProduct(id: any): Observable<any> {
+    return this.http.delete(`${prodUrl}/${id}`).pipe(
+      tap((res: any) => console.log(res)),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Handle errors
+   * @param error
+   * @returns
+   */
+  public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred: ', error);
       // console.error('An error occurred: ', error.error.message);
@@ -106,7 +108,7 @@ export class AccountSellerService {
       );
     }
     // return throwError('Something bad happened; please try again later');
-    return throwError(error.error.errors);
+    return throwError(error.error);
   }
 }
 

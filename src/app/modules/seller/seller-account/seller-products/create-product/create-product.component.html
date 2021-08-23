@@ -1,0 +1,98 @@
+<div class="container">
+    <form [formGroup]="createForm" (ngSubmit)="onCreate()" enctype="multipart/form-data">
+        <!-- Name -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="name" required>
+        </div>
+
+        <!-- price -->
+        <div class="form-group">
+            <input type="number" class="form-control" id="price" placeholder="Enter Price" formControlName="price"
+                required>
+        </div>
+
+        <!-- currency -->
+        <!-- <div class="form-group">
+            <input type="text" class="form-control" id="currency" placeholder="Enter currency" formControlName="currency" required>
+        </div> -->
+
+        <!-- discount_percent -->
+        <div class="form-group">
+            <input type="number" class="form-control" id="discount_percent" placeholder="Enter discount_percent"
+                formControlName="discount_percent">
+        </div>
+
+        <!-- quantity_in_stock -->
+        <div class="form-group">
+            <input type="number" class="form-control" id="quantity_in_stock" placeholder="Enter quantity_in_stock"
+                formControlName="quantity_in_stock">
+        </div>
+
+        <!-- video -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="video" placeholder="Enter video" formControlName="video">
+        </div>
+
+        <!-- details -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="details" placeholder="Enter details" formControlName="details">
+        </div>
+
+        <!-- unit -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="unit" placeholder="Enter unit" formControlName="unit">
+        </div>
+
+        <!-- active -->
+        <!-- <div class="form-group">
+            <input type="text" class="form-control" id="active" placeholder="Enter active" formControlName="active">
+        </div> -->
+
+        <!-- minimum_order_quantity -->
+        <div class="form-group">
+            <input type="number" class="form-control" id="minimum_order_quantity"
+                placeholder="Enter minimum_order_quantity" formControlName="minimum_order_quantity">
+        </div>
+
+        <!-- product_category_id -->
+        <!-- <div class="form-group">
+            <input type="text" class="form-control" id="product_category_id" placeholder="Enter product_category_id"
+                formControlName="product_category_id">
+        </div> -->
+
+        <!-- images -->
+        <div class="form-group">
+            <div class="row">
+                <div class="inputs">
+                    <label for="cover_image">Cover image</label><br>
+                    <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+                    <input type="file" class="form-control" id="cover_image" #filePicker (change)="onImagePicked($event)">
+                </div>
+                <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && !createForm.controls.cover_image.errors">
+                    <img [src]="imagePreview" [alt]="createForm.value.title">
+                </div>
+            </div>
+            <div *ngIf="submitted && createForm.controls.cover_image.errors && hasloaded" class="invalid-feedback">
+                <div *ngIf="createForm.controls.cover_image.errors">
+                    {{errors.cover_image[0]}}
+                </div>
+            </div>
+            
+
+        </div>
+
+        <!-- images -->
+
+        <div class="row">
+            <div class="inputs">
+                <label for="images">Images</label><br>
+                <button mat-stroked-button type="button" (click)="filesPicker.click()">Pick Images</button>
+                <input type="file" class="form-control" id="images" #filesPicker (change)="onImagesPicked($event)">
+            </div>
+            <div class="image-preview" *ngIf="imagesPreview !== '' && imagesPreview && !createForm.controls.images.errors">
+                <img [src]="imagesPreview" [alt]="createForm.value.title">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

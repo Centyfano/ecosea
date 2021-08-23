@@ -1,24 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-export class Product {
-  constructor(
-    public name: string,
-    public price: number,
-    public currency: string,
-    public discount_percent: number,
-    public quantity_in_stock: number,
-    public video: string,
-    public details: string,
-    public unit: string,
-    public active: string,
-    public minimum_order_quantity: number,
-    public product_category_id: number,
-    public cover_image: string,
-    public image: string,
-    public rating: string
-  ) {}
-}
+import { Product } from 'src/app/modules/models/product';
+import { AccountSellerService } from 'src/app/services/account-seller.service';
 
 @Component({
   selector: 'app-seller-products',
@@ -28,25 +11,30 @@ export class Product {
 export class SellerProductsComponent implements OnInit {
   categories = ['products'];
   products: Product[];
+  product: Product | any;
 
-  constructor(private httpClient: HttpClient) {
+  hasLoaded = false;
+  constructor(private sellerService: AccountSellerService) {
     this.products = [];
   }
 
   ngOnInit(): void {
     this.getProducts();
-    //this.updateProducts();
   }
 
   getProducts() {
-    this.httpClient
-      .get<any>(
-        'https://peaceful-beyond-74495.herokuapp.com/api/seller/products'
-      )
-      .subscribe((response) => {
-        // console.log(response);
-        this.products = response;
-      });
+    this.sellerService.getProducts().subscribe(
+      (res: any) => {
+        this.products = res;
+
+        this.hasLoaded = true;
+      },
+      (err) => console.error(err)
+    );
+  }
+
+  addProduct() {
+    
   }
   // updateProducts() {
   //   this.httpClient

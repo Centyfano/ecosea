@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AccountSellerService } from 'src/app/services/account-seller.service';
 
 // import custom validator to validate that password and confirm password fields match
 import { MustMatch } from '../../../shared/helpers/must-match.validator';
+import { SellerAuthService } from '../auth/seller-auth.service';
 
 @Component({
   selector: 'app-seller-register',
@@ -18,7 +18,7 @@ export class SellerRegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private sellerService: AccountSellerService,
+    private sellerAuthService: SellerAuthService,
     private route: ActivatedRoute
   ) {}
 
@@ -56,15 +56,13 @@ export class SellerRegisterComponent implements OnInit {
       return;
     }
 
-    this.sellerService.register(this.registerForm.value).subscribe(
+    this.sellerAuthService.register(this.registerForm.value).subscribe(
       (res: any) => {
-        console.log('success', res);
-        localStorage.setItem('token', res);
+        localStorage.setItem('token', res.token);
         this.router.navigateByUrl('/seller/account');
-
       },
       (err) => {
-        console.error('error',err);
+        console.error('error', err);
       }
     );
   }
