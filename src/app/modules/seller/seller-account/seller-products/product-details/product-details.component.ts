@@ -24,11 +24,11 @@ export class ProductDetailsComponent implements OnInit {
   ) {}
 
   getProduct() {
-    const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+    const slug = this.route.snapshot.paramMap.get('slug');
 
     this.sellerService.getProducts().subscribe(
       (res: any) => {
-        const p = res.filter((p: any) => p.product_id == id);
+        const p = res.filter((p: any) => p.slug == slug);
         this.product = p[0];
         console.log(this.product);
         this.hasLoaded = true;
@@ -71,21 +71,9 @@ export class ProductDetailsComponent implements OnInit {
     return this.cantEdit;
   }
   onSubmit() {
-    console.log(this.editForm.value);
-    this.sellerService.editProduct(this.editForm.value, this.product.product_id).subscribe(
-      (res) => {
-        console.log(res);
-        this.location.back();
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-  }
-  onDelete() {
-    console.log(this.product.product_id);
+    console.log(this.product.slug);
     this.sellerService
-      .deleteProduct(this.product.product_id)
+      .editProduct(this.editForm.value, this.product.slug)
       .subscribe(
         (res) => {
           console.log(res);
@@ -95,6 +83,18 @@ export class ProductDetailsComponent implements OnInit {
           console.error(err);
         }
       );
+  }
+  onDelete() {
+    console.log(this.product.product_id);
+    this.sellerService.deleteProduct(this.product.product_id).subscribe(
+      (res) => {
+        console.log(res);
+        this.location.back();
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   ngOnInit(): void {

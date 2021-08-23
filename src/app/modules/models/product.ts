@@ -13,6 +13,7 @@ export interface Product {
   product_category_id: string;
   cover_image: string;
   images: Array<string>;
+  slug: string
 }
 
 export interface PostProduct {

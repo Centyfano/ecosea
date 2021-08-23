@@ -48,6 +48,7 @@ export class AccountSellerService {
                 return image.data.attributes.path;
               }
             ),
+            slug: prod.data.attributes.product_category_slug,
           };
         });
         // console.log(products);
@@ -78,8 +79,8 @@ export class AccountSellerService {
    * @param id ID
    * @returns observable
    */
-  editProduct(product: any, id: any): Observable<any> {
-    return this.http.patch(`${prodUrl}/${id}`, product).pipe(
+  editProduct(product: any, slug: any): Observable<any> {
+    return this.http.patch(`${prodUrl}/${slug}`, product).pipe(
       tap((res: any) => console.log(res)),
       catchError(this.handleError)
     );
@@ -111,4 +112,3 @@ export class AccountSellerService {
     return throwError(error.error);
   }
 }
-

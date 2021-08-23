@@ -52,7 +52,7 @@ const routes: Routes = [
     path: 'products',
     children: [
       { path: '', component: SellerProductsComponent },
-      { path: 'detail/:id', component: ProductDetailsComponent },
+      { path: 'detail/:slug', component: ProductDetailsComponent },
       { path: 'create', component: CreateProductComponent },
     ],
   },
