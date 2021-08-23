@@ -45,14 +45,17 @@ export class SellerLoginComponent implements OnInit {
         console.log(res);
         // this.sellerService.userToken = token;
         localStorage.setItem('token', res.token);
-        this.router.navigateByUrl('/seller/account');
+        this.router
+          .navigateByUrl('/seller/account')
+          .then(c =>{ window.location.reload();});
+        // window.location.reload();
 
         // this.sellerService.userToken
       },
       (err) => {
         this.errors = err.errors;
         this.usererror = this.errors.meta.email[0];
-        this.loading = false;        
+        this.loading = false;
         // console.log(this.errors);
       }
     );

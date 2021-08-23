@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Event, NavigationStart, Router } from '@angular/router';
 import { SellerAuthService } from 'src/app/modules/seller/auth/seller-auth.service';
@@ -13,7 +14,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private ref: ChangeDetectorRef,
-    private sellerAuthService: SellerAuthService
+    private sellerAuthService: SellerAuthService,
+    private location: Location
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
@@ -29,6 +31,12 @@ export class HeaderComponent implements OnInit {
 
   isLogged() {
     if (this.sellerAuthService.isLoggedIn()) this.loggedIn = true;
+  }
+
+  onLogout() {
+    localStorage.removeItem('token')
+    window.location.reload()
+    
   }
 
   ngOnInit(): void {

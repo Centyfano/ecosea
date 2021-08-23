@@ -35,9 +35,11 @@ export class CreateProductComponent implements OnInit {
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement | any).files[0];
-    this.createForm.patchValue({ cover_image: [file] });
+    this.createForm.patchValue({ cover_image: file });
     this.createForm.get('cover_image')?.updateValueAndValidity();
     // console.log(file);
+    console.log(file, typeof file);
+
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = <string>reader.result;
@@ -60,7 +62,30 @@ export class CreateProductComponent implements OnInit {
   onCreate() {
     this.submitted = true;
     console.log(this.createForm.value);
-    this.sellerService.createProduct(this.createForm.value).subscribe(
+    const form = new FormData();
+    const image: File = this.createForm.value.cover_image;
+    // console.log(typeof image);
+
+    form.append('name', this.createForm.value.name);
+    form.append('price', this.createForm.value.price);
+    form.append('currency', this.createForm.value.currency);
+    form.append('discount_percent', this.createForm.value.discount_percent);
+    form.append('quantity_in_stock', this.createForm.value.quantity_in_stock);
+    form.append('details', this.createForm.value.details);
+    form.append('unit', this.createForm.value.unit);
+    form.append('active', this.createForm.value.active);
+    form.append(
+      'minimum_order_quantity',
+      this.createForm.value.minimum_order_quantity
+    );
+    form.append(
+      'product_category_id',
+      this.createForm.value.product_category_id
+    );
+    form.append('cover_image', image, this.createForm.value.name);
+    form.append('images', this.createForm.value.images);
+
+    this.sellerService.createProduct(form).subscribe(
       (res) => {
         console.log(res);
         this.location.back();
@@ -69,7 +94,7 @@ export class CreateProductComponent implements OnInit {
         console.error(err);
         this.errors = err.errors.meta;
         console.log(this.errors);
-        this.hasloaded = true
+        this.hasloaded = true;
       }
     );
   }

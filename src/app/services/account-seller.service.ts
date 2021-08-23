@@ -18,7 +18,7 @@ export class AccountSellerService {
   constructor(private http: HttpClient, private router: Router) {}
 
   options = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
   };
 
   /**
@@ -62,10 +62,10 @@ export class AccountSellerService {
 
   /**
    * Create Product
-   * @param data 
+   * @param data
    * @returns observable
    */
-  createProduct(data: PostProduct): Observable<PostProduct> {
+  createProduct(data: FormData): Observable<PostProduct> {
     return this.http.post<PostProduct>(prodUrl, data, this.options).pipe(
       tap((res: any) => console.log(res)),
       catchError(this.handleError)
@@ -112,4 +112,3 @@ export class AccountSellerService {
   }
 }
 
-// post(url: string, body: any, options: { headers?: HttpHeaders | { [header: string]: string | string[]; } | undefined; observe: "events"; context?: HttpContext | undefined; params?: HttpParams | { ...; } | undefined; reportProgress?: boolean | undefined; responseType?: "json" | undefined; withCredentials?: boolean | undefined; })
