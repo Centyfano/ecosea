@@ -1,29 +1,30 @@
-<div class="container py-4">
+<div class="container py-4" >
   <h4 class="card-header">
     Account Details
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"> </span>
   </h4>
 
   <!--  -->
-  <form [formGroup]="userDetailsForm" (ngSubmit)="onUpdate()">
+  <form *ngIf="hasloaded" [formGroup]="userDetailsForm" (ngSubmit)="onUpdate()">
     <div class="form-row">
       <!-- first name -->
       <div class="form-group col-md-6">
-        <label for="inputEmail4">First Name</label>
+        <label for="inputEmail4">Name</label>
         <input
           type="text"
           class="form-control"
-          id="firstName"
-          formControlName="firstName"
-          placeholder="First Name"
+          id="name"
+          formControlName="name"
+          placeholder="Name"
+          [readonly]="cantEdit"
           [ngClass]="{
-            'is-invalid': submitted && f.firstName.errors
+            'is-invalid': submitted && f.name.errors
           }"
         />
       </div>
 
       <!-- last name -->
-      <div class="form-group col-md-6">
+      <!-- <div class="form-group col-md-6">
         <label for="lastName">Last Name</label>
         <input
           type="text"
@@ -32,21 +33,21 @@
           placeholder="Last Name"
           formControlName="lastName"
           [ngClass]="{
-            'is-invalid': submitted && f.firstName.errors
+            'is-invalid': submitted && f.name.errors
           }"
         />
-      </div>
+      </div> -->
     </div>
     <!-- errors -->
     <div class="form-row">
       <!-- first name error -->
-      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-        <div *ngIf="f.firstName.errors.required">First Name is required</div>
+      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+        <div *ngIf="f.name.errors.required">Name is required</div>
       </div>
       <!-- last name error -->
-      <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+      <!-- <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
         <div *ngIf="f.lastName.errors.required">Last Name is required</div>
-      </div>
+      </div> -->
     </div>
 
     <div class="form-row">
@@ -57,37 +58,39 @@
           type="email"
           class="form-control"
           id="email"
+          readonly="true"
           placeholder="Email"
           formControlName="email"
           [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
         />
       </div>
       <!-- phone number -->
-      <div class="form-group col-md-6">
-        <label for="phoneNumber">Phone Number</label>
+      <!-- <div class="form-group col-md-6">
+        <label for="phone">Phone Number</label>
         <input
           type="text"
           class="form-control"
-          id="phoneNumber"
+          id="phone"
           placeholder="Phone Number"
-          formControlName="phoneNumber"
+          formControlName="phone"
+          readonly="true"
           [ngClass]="{
-            'is-invalid': submitted && f.phoneNumber.errors
+            'is-invalid': submitted && f.phone.errors
           }"
         />
-      </div>
+      </div> -->
     </div>
 
     <div class="form-row">
       <!-- phone number error -->
-      <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
-        <div *ngIf="f.phoneNumber.errors.required">
+      <!-- <div *ngIf="submitted && f.phone.errors" class="invalid-feedback"> -->
+        <!-- <div *ngIf="f.phone.errors.required">
           Phone Number is required
-        </div>
-        <!-- <div *ngIf="f.phoneNumber.errors.minlength">
+        </div> -->
+        <!-- <div *ngIf="f.phone.errors.minlength">
           Phone Number must be at least 9 characters
         </div> -->
-      </div>
+      <!-- </div> -->
       <!-- email error -->
       <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
         <div *ngIf="f.email.errors.required">Email is required</div>
@@ -97,13 +100,15 @@
       </div>
     </div>
 
-    <button
-      type="submit"
-      class="btn btn-primary text-uppercase"
-      [ngStyle]="{ 'background-color': 'var(--theme-color, orange)' }"
-    >
-      Update
-    </button>
+    <div class="row my-3 ">
+      <button class="btn btn-primary btn-block buttons" *ngIf="cantEdit" (click)="canEdit()">Edit Account Details</button>
+      <div class="col-sm-6">
+        <button class="btn btn-block btn-primary" type="submit" *ngIf="!cantEdit">Submit</button>
+      </div>
+      <div class="col-sm-6">
+        <button class="btn btn-block btn-secondary" type="button" *ngIf="!cantEdit" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
   </form>
 
   <!-- <div class="row my-3" *ngIf="userDetails.length !== 0">

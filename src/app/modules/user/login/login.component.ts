@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
   userLoginForm!: FormGroup;
   submitted = false;
   loading = false;
+  errors: any;
+  usererror: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,13 +43,25 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.submitted = true;
     this.account.login(this.f.email.value, this.f.password.value).subscribe({
-      next: (token: string) => {
-        this.account.userToken = token;
+      next: (tok: any) => {
+        const token = JSON.parse(tok)
+        // console.log(token.token);
+        this.account.userToken = token.token;
+        localStorage.setItem('token', token.token);
         this.router.navigateByUrl('/user/account');
       },
-      error: (error) => {
+      error: (err) => {
+        console.log(err);
+        this.errors = err.errors;
+        // this.usererror = err.errors.meta.email[0] || err.errors.meta.password[0];
+        if (err.errors.meta.password) {
+          this.usererror = err.errors.meta.password[0];
+        } else if (err.errors.meta.email) {
+          this.usererror = err.errors.meta.email[0];
+        }
         this.loading = false;
-        console.error(error);
+        this.loading = false;
+        // console.error(error);
       },
     });
   }

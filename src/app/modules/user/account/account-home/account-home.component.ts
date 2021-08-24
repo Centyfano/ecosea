@@ -10,6 +10,7 @@ import { UserService } from '../_services/user.service';
 export class AccountHomeComponent implements OnInit {
   userDetails: any = {};
   loading = false;
+  user: any;
 
   constructor(
     private accountService: AccountService,
@@ -34,9 +35,11 @@ export class AccountHomeComponent implements OnInit {
   }
 
   getUserInfo(data: any) {
+    this.user = data.user_id;
     this.userDetails = {
       name: data.attributes.user_name,
       email: data.attributes.user_email,
+      id: data.user_id,
     };
   }
 

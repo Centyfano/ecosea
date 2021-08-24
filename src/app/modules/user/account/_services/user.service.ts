@@ -50,7 +50,7 @@ export class UserService {
   // edit user profile name
   editUserProfileName(name: string): Observable<any> {
     return this.http
-      .patch(`${API}/auth/user`, { name }, { headers: this.headers })
+      .patch(`${API}/auth/user`, name, { headers: this.headers })
       .pipe(catchError(this.handleError));
   }
 

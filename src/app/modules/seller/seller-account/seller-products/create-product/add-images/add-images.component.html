@@ -2,7 +2,7 @@
     <form (ngSubmit)="onUpload()" enctype="multipart/form-data">
         <!-- images -->
         <div class="form-group m-1">
-            <div class="row" style="margin: 1px;justify-content: space-between;">
+            <div *ngIf="!uploading" class="row" style="margin: 1px;justify-content: space-between;">
                 <div class="inputs">
                     <label for="images">Images</label><br>
                     <input type="file" id="images" #filePicker (change)="onImagePicked($event)" multiple>

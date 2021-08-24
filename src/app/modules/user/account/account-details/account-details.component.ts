@@ -1,6 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
 import { UserService } from '../_services/user.service';
+
+export interface User {
+  name: string;
+  email: string;
+  phone: number;
+}
 
 @Component({
   selector: 'app-account-details',
@@ -11,27 +20,32 @@ export class AccountDetailsComponent implements OnInit {
   userInfo: any[] = [];
   userDetails: any[] = [];
   loading = false;
+  hasloaded = false;
   userDetailsForm!: FormGroup;
   submitted = false;
+  cantEdit = true;
+  @Input() user: User | any;
 
   constructor(
     private UserService: UserService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private location: Location,
+    private route: ActivatedRoute,
+    private accountService: AccountService
   ) {}
-
-  ngOnInit(): void {
-    this.userDetailsForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      email: ['', Validators.required, Validators.email],
-    });
-    this.viewUserInfo();
-  }
 
   // convenience getter for easy access to form fields
   get f() {
     return this.userDetailsForm.controls;
+  }
+
+  canEdit() {
+    this.cantEdit = false;
+    return this.cantEdit;
+  }
+  cancel() {
+    this.cantEdit = true;
+    // this.location.back();
   }
 
   onUpdate() {
@@ -42,22 +56,34 @@ export class AccountDetailsComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
-    this.viewUserInfo();
+    this.loading = false;
+    // console.log(this.userDetailsForm.value);
+    this.UserService.editUserProfileName(this.userDetailsForm.value).subscribe(
+      (res) => {
+        console.log(res);
+        this.location.back();
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+
   }
 
   // view user info
   viewUserInfo() {
-    this.loading = true;
+    // this.loading = true;
+
     this.UserService.getUserProfile().subscribe({
       next: (data: any) => {
-        this.loading = false;
-        this.userInfo = data;
-        this.userDetails = this.getUserInfo(this.userInfo);
-        this.f.firstName.setValue(this.userDetails[0].name.split(' ')[0]);
-        this.f.lastName.setValue(this.userDetails[0].name.split(' ')[1]);
-        this.f.email.setValue(this.userDetails[0].email);
-        this.f.phoneNumber.setValue(this.userDetails[0].phone);
+        this.user = data.data.attributes;
+        console.log(this.user);
+
+        this.userDetailsForm = this.formBuilder.group({
+          name: [this.user.user_name, [Validators.required]],
+          email: [this.user.user_email, [Validators.required, Validators.email]],
+        });
+        this.hasloaded = true;
       },
       error: (error) => {
         console.error(error);
@@ -65,19 +91,8 @@ export class AccountDetailsComponent implements OnInit {
     });
   }
 
-  getUserInfo(data: any) {
-    let items: any[] = [];
-    let item = data.data;
+  ngOnInit(): void {
+    this.viewUserInfo();
 
-    items.push({
-      id: item.user_id,
-      name: item.attributes.user_name,
-      email: item.attributes.user_email,
-      phone: item.attributes.phone ? item.attributes.phone : 'N/A',
-    });
-
-    // console.log(items[0]);
-
-    return items;
   }
 }

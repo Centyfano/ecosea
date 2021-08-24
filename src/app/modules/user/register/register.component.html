@@ -29,21 +29,21 @@
         <!-- name -->
         <div class="form-group">
           <div class="form-row mb-3">
-            <!-- first name -->
+            <!-- Name -->
             <div class="col">
-              <label class="sr-only">First Name</label>
+              <label class="sr-only">Name</label>
               <input
                 type="text"
-                formControlName="firstName"
-                placeholder="First Name"
+                formControlName="name"
+                placeholder="Name"
                 class="form-control"
                 [ngClass]="{
-                  'is-invalid': submitted && f.firstName.errors
+                  'is-invalid': submitted && f.name.errors
                 }"
               />
             </div>
             <!-- second name -->
-            <div class="col">
+            <!-- <div class="col">
               <label class="sr-only">Last Name</label>
               <input
                 type="text"
@@ -54,14 +54,14 @@
                   'is-invalid': submitted && f.lastName.errors
                 }"
               />
-            </div>
-            <!-- first name error -->
+            </div> -->
+            <!-- Name error -->
             <div
-              *ngIf="submitted && f.firstName.errors"
+              *ngIf="submitted && f.name.errors"
               class="invalid-feedback"
             >
-              <div *ngIf="f.firstName.errors.required">
-                First Name is required
+              <div *ngIf="f.name.errors.required">
+                Name is required
               </div>
             </div>
             <!-- last name error -->
@@ -97,7 +97,7 @@
           </div>
         </div>
         <!-- phone number -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <div class="form-row mb-3">
             <div class="col">
               <input
@@ -111,7 +111,7 @@
               />
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- password -->
         <div class="form-group">
           <div class="form-row">

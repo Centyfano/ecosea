@@ -23,10 +23,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.userRegisterForm = this.formBuilder.group(
       {
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
+        name: ['', Validators.required],
+        // lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        phoneNumber: ['', Validators.required],
+        // phoneNumber: ['', Validators.required],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
       },
@@ -45,10 +45,11 @@ export class RegisterComponent implements OnInit {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  get fullName() {
-    return `${this.capitalizeFirstLetter(this.f.firstName.value)}
-      ${this.capitalizeFirstLetter(this.f.lastName.value)}`;
-  }
+  // get fullName() {
+  //   return `${this.capitalizeFirstLetter(
+  //     this.f.firstName.value
+  //   )} ${this.capitalizeFirstLetter(this.f.lastName.value)}`;
+  // }
 
   onSubmit() {
     this.submitted = true;
@@ -61,7 +62,7 @@ export class RegisterComponent implements OnInit {
     this.loading = true;
     this.account
       .register(
-        this.fullName,
+        this.f.name.value,
         this.f.email.value,
         this.f.password.value,
         this.f.confirmPassword.value

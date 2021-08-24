@@ -29,8 +29,6 @@ export class SellerLoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onLogin() {
-    // console.log(this.sellerLoginForm.value);
-    // console.log('err is', this.sellerLoginForm);
 
     this.submitted = true;
 
