@@ -9,18 +9,18 @@
         Products
     </button>
 </div>
-<div class="container py-4" >
+<div class="container py-4">
     <h4 class="card-header">Product Details</h4>
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="hasLoaded">
-        
+
         <!-- card -->
         <div class="row my-3">
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Name</h6>
-                        <input formControlName="name" type="text" class="card-text form-control" value="{{product.product_name}}"
-                            [readonly]="cantEdit" >
+                        <input formControlName="name" type="text" class="card-text form-control"
+                            value="{{product.product_name}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
         <div class="row my-3">
@@ -42,8 +42,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Currency</h6>
-                        <input formControlName="currency" type="text" class="card-text form-control" value="{{product.currency}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="currency" type="text" class="card-text form-control"
+                            value="{{product.currency}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -52,8 +52,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Discount Percent</h6>
-                        <input formControlName="discount_percent" type="number" class="card-text form-control" value="{{product.discount_percent}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="discount_percent" type="number" class="card-text form-control"
+                            value="{{product.discount_percent}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -64,8 +64,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Quantity in stock</h6>
-                        <input formControlName="quantity_in_stock" type="number" class="card-text form-control" value="{{product.quantity_in_stock}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="quantity_in_stock" type="number" class="card-text form-control"
+                            value="{{product.quantity_in_stock}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -74,22 +74,22 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Video</h6>
-                        <input formControlName="video" type="text" class="card-text form-control" value="{{product.product_video}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="video" type="text" class="card-text form-control"
+                            value="{{product.product_video}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row my-3">
-            
+
             <!-- card -->
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Unit</h6>
-                        <input formControlName="unit" type="text" class="card-text form-control" value="{{product.product_unit}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="unit" type="text" class="card-text form-control"
+                            value="{{product.product_unit}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -111,8 +111,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Active</h6>
-                        <input formControlName="active" type="text" class="card-text form-control" value="{{product.active}}"
-                            [readonly]="cantEdit">
+                        <input formControlName="active" type="text" class="card-text form-control"
+                            value="{{product.active}}" [readonly]="cantEdit">
                     </div>
                 </div>
             </div>
@@ -121,8 +121,23 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Product Category ID</h6>
-                        <input formControlName="product_category_id" type="text" class="card-text form-control" value="{{product.product_category_id}}"
-                            readonly>
+                        <input formControlName="product_category_id" type="text" class="card-text form-control"
+                            value="{{product.product_category_id}}" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-title" style="margin: 10px;">Cover image</div>
+                    <div class="cover"><img class="card-image" src="{{image}}" alt="" srcset=""></div>
+
+                </div>
+                <div class="card" *ngIf="images">
+                    <div class="card-title" style="margin: 10px;">Images</div>
+                    <div class="images row">
+                        <img *ngFor="let img of images" class="card-image" src="{{img}}" alt="" srcset="">
                     </div>
                 </div>
             </div>
@@ -133,9 +148,10 @@
                     Details</button>
             </div>
             <div class="col-sm-6">
-                <button class="btn btn-block btn-danger" type="button" *ngIf="cantEdit" (click)="onDelete()">Delete</button>
+                <button class="btn btn-block btn-danger" type="button" *ngIf="cantEdit"
+                    (click)="onDelete()">Delete</button>
             </div>
-                  
+
             <div class="col-sm-6">
                 <button class="btn btn-block btn-primary" type="submit" *ngIf="!cantEdit">Submit</button>
             </div>
@@ -144,5 +160,7 @@
                     (click)="cancel()">Cancel</button>
             </div>
         </div>
+
+
     </form>
 </div>

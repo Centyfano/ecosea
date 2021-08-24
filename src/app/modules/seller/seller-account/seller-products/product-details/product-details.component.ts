@@ -14,6 +14,8 @@ export class ProductDetailsComponent implements OnInit {
   product!: Product;
   hasLoaded = false;
   cantEdit = true;
+  images: any;
+  image!: string;
 
   editForm!: FormGroup;
   constructor(
@@ -32,6 +34,8 @@ export class ProductDetailsComponent implements OnInit {
         const p = res.filter((p: any) => p.slug == slug);
         this.product = p[0];
         this.hasLoaded = true;
+        this.images = this.product.images;
+        this.image = this.product.cover_image;
 
         this.editForm = this.fb.group({
           name: [this.product.product_name, [Validators.required]],
@@ -84,7 +88,7 @@ export class ProductDetailsComponent implements OnInit {
     this.sellerService.deleteProduct(this.product.slug).subscribe(
       (res) => {
         console.log(res);
-        this.location.back();
+        this.router.navigateByUrl('/seller/account/products');
       },
       (err) => {
         console.error(err);

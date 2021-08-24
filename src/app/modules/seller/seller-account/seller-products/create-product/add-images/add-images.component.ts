@@ -1,3 +1,4 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountSellerService } from 'src/app/services/account-seller.service';
@@ -12,6 +13,8 @@ export class AddImagesComponent implements OnInit {
   errors: any;
   selectedImages: File[] = [];
   slug = this.route.snapshot.queryParams.slug;
+  progress!: number;
+  uploading = false;
 
   hasloaded = false;
   submitted = false;
@@ -34,15 +37,23 @@ export class AddImagesComponent implements OnInit {
     }
     for (let i = 0; i < len; i++) {
       form.append(
-        'images',
+        'images[]',
         this.selectedImages[i],
         this.selectedImages[i].name
       );
     }
 
     this.sellerService.addImages(form, this.slug).subscribe(
-      (res) => {
-        console.log(res);
+      (event) => {
+        this.uploading = true;
+        if (event.type === HttpEventType.UploadProgress) {
+          // progress bar
+          this.progress = Math.round((event.loaded / event.total) * 100);
+        } else if (event.type === HttpEventType.Response) {
+          // Handle res
+          console.log(event);
+          this.router.navigateByUrl(`/seller/account/products/detail/${this.slug}`);
+        }
       },
       (err) => {
         console.error(err);

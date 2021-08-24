@@ -1,0 +1,12 @@
+.cover,.images{
+    width: 100%;
+    padding: 10px;justify-content: space-evenly;
+}
+.cover img, .images img{
+    width: 25%;
+}
+
+.images img{    
+    margin: 10px;
+    border: 1px solid rgb(184, 184, 184);
+}
