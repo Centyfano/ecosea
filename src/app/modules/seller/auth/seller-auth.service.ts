@@ -92,11 +92,39 @@ export class SellerAuthService {
     );
   }
 
-  // logout
-  logout(): Observable<any> {
+  /**
+   * Change password
+   * @param details password form
+   * @returns observable
+   */
+  changePassword(details: any): Observable<any> {
     return this.http
-      .post(`${url}/logout`, {})
-      .pipe(catchError(this.selleService.handleError));
+      .patch<EditSeller>(`${url}/auth/update-password`, details, this.options)
+      .pipe(
+        tap((res) => {
+          console.log(res);
+        }),
+        catchError(this.selleService.handleError)
+      );
+  }
+
+  /**
+   * Logout
+   * @returns null
+   */
+  logout(): Observable<any> {
+    return this.http.post(`${url}/logout`, {}).pipe(
+      tap((e) => {}),
+      catchError(this.selleService.handleError)
+    );
+  }
+
+
+  deleteAccount(): Observable<any>{
+    return this.http.delete(authUrl, {}).pipe(
+      tap((e) => {}),
+      catchError(this.selleService.handleError)
+    );
   }
 
   constructor(

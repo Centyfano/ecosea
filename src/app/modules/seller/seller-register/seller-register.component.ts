@@ -59,6 +59,14 @@ export class SellerRegisterComponent implements OnInit {
     this.sellerAuthService.register(this.registerForm.value).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
+        this.sellerAuthService.login(this.registerForm.value).subscribe(
+          (s) => {
+            console.log('success');
+          },
+          (e) => {
+            console.error(e);
+          }
+        );
         this.router.navigateByUrl('/seller/account');
       },
       (err) => {
@@ -67,4 +75,3 @@ export class SellerRegisterComponent implements OnInit {
     );
   }
 }
-

@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/modules/models/product';
 import { AccountSellerService } from 'src/app/services/account-seller.service';
 
@@ -20,7 +20,8 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private sellerService: AccountSellerService,
     private fb: FormBuilder,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   getProduct() {
@@ -30,16 +31,12 @@ export class ProductDetailsComponent implements OnInit {
       (res: any) => {
         const p = res.filter((p: any) => p.slug == slug);
         this.product = p[0];
-        console.log(this.product);
         this.hasLoaded = true;
 
         this.editForm = this.fb.group({
-          product_name: [this.product.product_name, [Validators.required]],
-          product_details: [
-            this.product.product_details,
-            [Validators.required],
-          ],
-          product_price: [this.product.product_price, [Validators.required]],
+          name: [this.product.product_name, [Validators.required]],
+          details: [this.product.product_details, [Validators.required]],
+          price: [this.product.product_price, [Validators.required]],
           currency: [this.product.currency, [Validators.required]],
           discount_percent: [
             this.product.discount_percent,
@@ -49,8 +46,8 @@ export class ProductDetailsComponent implements OnInit {
             this.product.quantity_in_stock,
             [Validators.required],
           ],
-          product_video: [this.product.product_video, [Validators.required]],
-          product_unit: [this.product.product_unit, [Validators.required]],
+          video: [this.product.product_video, [Validators.required]],
+          unit: [this.product.product_unit, [Validators.required]],
           active: [this.product.active, [Validators.required]],
           product_category_id: [
             this.product.product_category_id,
@@ -71,12 +68,10 @@ export class ProductDetailsComponent implements OnInit {
     return this.cantEdit;
   }
   onSubmit() {
-    console.log(this.product.slug);
     this.sellerService
       .editProduct(this.editForm.value, this.product.slug)
       .subscribe(
         (res) => {
-          console.log(res);
           this.location.back();
         },
         (err) => {
@@ -85,8 +80,8 @@ export class ProductDetailsComponent implements OnInit {
       );
   }
   onDelete() {
-    console.log(this.product.product_id);
-    this.sellerService.deleteProduct(this.product.product_id).subscribe(
+    console.log(this.product.slug);
+    this.sellerService.deleteProduct(this.product.slug).subscribe(
       (res) => {
         console.log(res);
         this.location.back();
@@ -95,6 +90,10 @@ export class ProductDetailsComponent implements OnInit {
         console.error(err);
       }
     );
+  }
+
+  goBack() {
+    this.router.navigateByUrl('/seller/account/products');
   }
 
   ngOnInit(): void {

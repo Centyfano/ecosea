@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AccountSellerService } from 'src/app/services/account-seller.service';
 import { Location } from '@angular/common';
 import { mimeType } from './mime-type.validator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-product',
@@ -11,7 +12,7 @@ import { mimeType } from './mime-type.validator';
 })
 export class CreateProductComponent implements OnInit {
   imagePreview: ArrayBuffer[] | string | undefined;
-  imagesPreview: ArrayBuffer[] | string | undefined;
+  selectedImage!: File;
   submitted = false;
   hasloaded = false;
   errors: any;
@@ -34,37 +35,25 @@ export class CreateProductComponent implements OnInit {
   });
 
   onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement | any).files[0];
-    this.createForm.patchValue({ cover_image: file });
+    this.selectedImage = (event.target as HTMLInputElement | any).files[0];
+
+    this.createForm.patchValue({ cover_image: this.selectedImage });
     this.createForm.get('cover_image')?.updateValueAndValidity();
-    // console.log(file);
-    console.log(file, typeof file);
 
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = <string>reader.result;
     };
-    reader.readAsDataURL(file);
-  }
-
-  onImagesPicked(event: Event) {
-    const file = (event.target as HTMLInputElement | any).files[0];
-    this.createForm.patchValue({ images: [file] });
-    this.createForm.get('images')?.updateValueAndValidity();
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagesPreview = <string>reader.result;
-    };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(this.selectedImage);
   }
 
   onCreate() {
     this.submitted = true;
-    console.log(this.createForm.value);
-    const form = new FormData();
-    const image: File = this.createForm.value.cover_image;
+    // console.log(this.createForm.value);
+    // const image: File = this.createForm.value.cover_image;
     // console.log(typeof image);
+
+    const form = new FormData();
 
     form.append('name', this.createForm.value.name);
     form.append('price', this.createForm.value.price);
@@ -82,13 +71,17 @@ export class CreateProductComponent implements OnInit {
       'product_category_id',
       this.createForm.value.product_category_id
     );
-    form.append('cover_image', image, this.createForm.value.name);
-    form.append('images', this.createForm.value.images);
+    form.append('cover_image', this.selectedImage, this.selectedImage.name);
+
+    console.dir(form);
+    // form.append('images', this.createForm.value.images);
 
     this.sellerService.createProduct(form).subscribe(
-      (res) => {
-        console.log(res);
-        this.location.back();
+      (res: any) => {
+        console.log(res.data);
+        const slug = res.data.attributes.slug;
+        // this.location.back();
+        this.router.navigateByUrl(`/seller/account/products/create/add-images?slug=${slug}`);
       },
       (err) => {
         console.error(err);
@@ -101,7 +94,8 @@ export class CreateProductComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     private sellerService: AccountSellerService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}

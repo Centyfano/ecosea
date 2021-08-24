@@ -3,11 +3,12 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { PostProduct, Product } from '../modules/models/product';
+import { SellerAuthService } from '../modules/seller/auth/seller-auth.service';
 
 const url = 'https://peaceful-beyond-74495.herokuapp.com/api/seller',
   prodUrl = `${url}/products`;
@@ -15,7 +16,11 @@ const url = 'https://peaceful-beyond-74495.herokuapp.com/api/seller',
   providedIn: 'root',
 })
 export class AccountSellerService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private inject: Injector
+  ) {}
 
   options = {
     headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
@@ -48,7 +53,7 @@ export class AccountSellerService {
                 return image.data.attributes.path;
               }
             ),
-            slug: prod.data.attributes.product_category_slug,
+            slug: prod.data.attributes.slug,
           };
         });
         // console.log(products);
@@ -67,10 +72,22 @@ export class AccountSellerService {
    * @returns observable
    */
   createProduct(data: FormData): Observable<PostProduct> {
-    return this.http.post<PostProduct>(prodUrl, data, this.options).pipe(
-      tap((res: any) => console.log(res)),
+    return this.http.post<PostProduct>(prodUrl, data).pipe(
+      tap((res: any) => console.log('Product Created')),
       catchError(this.handleError)
     );
+  }
+
+  addImages(data: FormData, slug: string): Observable<any> {
+    return this.http
+      .post(`${prodUrl}/${slug}/images`, data, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        tap((res: any) => console.log('Images uploaded')),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -81,13 +98,13 @@ export class AccountSellerService {
    */
   editProduct(product: any, slug: any): Observable<any> {
     return this.http.patch(`${prodUrl}/${slug}`, product).pipe(
-      tap((res: any) => console.log(res)),
+      tap((res: any) => console.log('Product edited successfully')),
       catchError(this.handleError)
     );
   }
 
-  deleteProduct(id: any): Observable<any> {
-    return this.http.delete(`${prodUrl}/${id}`).pipe(
+  deleteProduct(slug: any): Observable<any> {
+    return this.http.delete(`${prodUrl}/${slug}`).pipe(
       tap((res: any) => console.log(res)),
       catchError(this.handleError)
     );
@@ -99,9 +116,13 @@ export class AccountSellerService {
    * @returns
    */
   public handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
+    // const authSellerService = this.inject.get(SellerAuthService);
+    if (error.status == (401 || 403)) {
       console.error('An error occurred: ', error);
-      // console.error('An error occurred: ', error.error.message);
+      localStorage.removeItem('token');
+      // authSellerService.isLoggedIn() == false;
+      // this.authSellerService.isLoggedIn() == false;
+      console.error('An error occurred: ', error.error.message);
     } else {
       console.error(
         // `Backend returned code ${error.status}, ` + `body was: ${error.error}`

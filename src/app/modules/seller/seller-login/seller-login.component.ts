@@ -16,6 +16,7 @@ export class SellerLoginComponent implements OnInit {
 
   errors: any;
   usererror: any;
+  pwerror: any;
   submitted = false;
   loading = false;
 
@@ -28,12 +29,12 @@ export class SellerLoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onLogin() {
-    // stop here if form is invalid
-    console.log(this.sellerLoginForm.value);
+    // console.log(this.sellerLoginForm.value);
     // console.log('err is', this.sellerLoginForm);
 
     this.submitted = true;
 
+    // stop here if form is invalid
     if (this.sellerLoginForm.invalid) {
       return;
     }
@@ -43,20 +44,20 @@ export class SellerLoginComponent implements OnInit {
     this.sellerAuthService.login(this.sellerLoginForm.value).subscribe(
       (res: any) => {
         console.log(res);
-        // this.sellerService.userToken = token;
         localStorage.setItem('token', res.token);
-        this.router
-          .navigateByUrl('/seller/account')
-          .then(c =>{ window.location.reload();});
-        // window.location.reload();
-
-        // this.sellerService.userToken
+        this.router.navigateByUrl('/seller/account').then((c) => {
+          window.location.reload();
+        });
       },
       (err) => {
         this.errors = err.errors;
-        this.usererror = this.errors.meta.email[0];
+        // this.usererror = err.errors.meta.email[0] || err.errors.meta.password[0];
+        if (err.errors.meta.password) {
+          this.usererror = err.errors.meta.password[0];
+        } else if (err.errors.meta.email) {
+          this.usererror = err.errors.meta.email[0];
+        }
         this.loading = false;
-        // console.log(this.errors);
       }
     );
   }

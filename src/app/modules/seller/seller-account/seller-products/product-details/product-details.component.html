@@ -1,3 +1,14 @@
+<div class="container py-4">
+    <span></span>
+    <button class="btn btn-light" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+            viewBox="0 0 10 20">
+            <path fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+        </svg>
+        Products
+    </button>
+</div>
 <div class="container py-4" >
     <h4 class="card-header">Product Details</h4>
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="hasLoaded">
@@ -8,7 +19,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Name</h6>
-                        <input formControlName="product_name" type="text" class="card-text form-control" value="{{product.product_name}}"
+                        <input formControlName="name" type="text" class="card-text form-control" value="{{product.product_name}}"
                             [readonly]="cantEdit" >
                     </div>
                 </div>
@@ -18,7 +29,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Details</h6>
-                        <input formControlName="product_details" type="text" class="card-text form-control"
+                        <input formControlName="details" type="text" class="card-text form-control"
                             value="{{product.product_details}}" [readonly]="cantEdit">
                     </div>
                 </div>
@@ -63,7 +74,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Video</h6>
-                        <input formControlName="product_video" type="text" class="card-text form-control" value="{{product.product_video}}"
+                        <input formControlName="video" type="text" class="card-text form-control" value="{{product.product_video}}"
                             [readonly]="cantEdit">
                     </div>
                 </div>
@@ -77,7 +88,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Unit</h6>
-                        <input formControlName="product_unit" type="text" class="card-text form-control" value="{{product.product_unit}}"
+                        <input formControlName="unit" type="text" class="card-text form-control" value="{{product.product_unit}}"
                             [readonly]="cantEdit">
                     </div>
                 </div>
@@ -88,7 +99,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title text-muted">Price</h6>
-                        <input formControlName="product_price" type="number" class="card-text form-control"
+                        <input formControlName="price" type="number" class="card-text form-control"
                             value="{{product.product_price}}" [readonly]="cantEdit">
                     </div>
                 </div>

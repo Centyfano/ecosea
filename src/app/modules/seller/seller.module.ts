@@ -15,7 +15,7 @@ const routes: Routes = [
     path: '',
     component: SellerDefaultComponent,
     children: [
-      { path: '', component: SellerHomeComponent, },
+      { path: '', component: SellerHomeComponent },
       {
         path: 'account',
         loadChildren: () =>
@@ -45,8 +45,6 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
   ],
-  providers: [
-    SellerGuard,
-  ],
+  providers: [SellerGuard],
 })
 export class SellerModule {}

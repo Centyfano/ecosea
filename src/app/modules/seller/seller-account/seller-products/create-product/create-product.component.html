@@ -62,11 +62,11 @@
 
         <!-- images -->
         <div class="form-group">
-            <div class="row">
+            <div class="row" style="margin: 1px;justify-content: space-between;">
                 <div class="inputs">
                     <label for="cover_image">Cover image</label><br>
-                    <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-                    <input type="file" class="form-control" id="cover_image" #filePicker (change)="onImagePicked($event)">
+                    <input type="file"  id="cover_image" #filePicker (change)="onImagePicked($event)">
+                    <button class="form-control" type="button" (click)="filePicker.click()">Pick Image</button>
                 </div>
                 <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && !createForm.controls.cover_image.errors">
                     <img [src]="imagePreview" [alt]="createForm.value.title">
@@ -83,7 +83,7 @@
 
         <!-- images -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="inputs">
                 <label for="images">Images</label><br>
                 <button mat-stroked-button type="button" (click)="filesPicker.click()">Pick Images</button>
@@ -92,7 +92,9 @@
             <div class="image-preview" *ngIf="imagesPreview !== '' && imagesPreview && !createForm.controls.images.errors">
                 <img [src]="imagesPreview" [alt]="createForm.value.title">
             </div>
+        </div> -->
+        <div class="form-group">
+            <button type="submit" class="form-control btn btn-primary">Submit</button>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

@@ -34,12 +34,19 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    localStorage.removeItem('token')
-    window.location.reload()
-    
+    this.sellerAuthService.logout().subscribe(
+      (e) => {
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/seller/login');
+      },
+      (r) => {
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/seller/login');
+      }
+    );
   }
 
   ngOnInit(): void {
-    this.isLogged()
+    this.isLogged();
   }
 }

@@ -1,0 +1,42 @@
+<div class="container">
+    <form (ngSubmit)="onUpload()" enctype="multipart/form-data">
+        <!-- images -->
+        <div class="form-group m-1">
+            <div class="row" style="margin: 1px;justify-content: space-between;">
+                <div class="inputs">
+                    <label for="images">Images</label><br>
+                    <input type="file" id="images" #filePicker (change)="onImagePicked($event)" multiple>
+                    <!-- <button class="form-control" type="button" (click)="filePicker.click()">Choose Images</button> -->
+                </div>
+                <!-- <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview">
+                    <img [src]="imagePreview" alt="alt img">
+                </div> -->
+            </div>
+            <!-- <div *ngIf="submitted && uploadForm.controls.images.errors && hasloaded" class="invalid-feedback">
+                <div *ngIf="uploadForm.controls.images.errors">
+                    {{errors.images[0]}}
+                </div>
+            </div> -->
+
+
+        </div>
+
+        <!-- images -->
+
+        <!-- <div class="row">
+            <div class="inputs">
+                <label for="images">Images</label><br>
+                <button mat-stroked-button type="button" (click)="filesPicker.click()">Pick Images</button>
+                <input type="file" class="form-control" id="images" #filesPicker (change)="onImagesPicked($event)">
+            </div>
+            <div class="image-preview" *ngIf="imagesPreview !== '' && imagesPreview && !uploadForm.controls.images.errors">
+                <img [src]="imagesPreview" [alt]="uploadForm.value.title">
+            </div>
+        </div> -->
+        <div *ngIf="errors" class="invalid-feedback errors">{{errors}}</div>
+        <div class="form-group mt-1" style="justify-content: space-between;">
+            <button type="button" class="btn btn-primary col-sm-5 m-1" (click)="onUpload()">Upload</button>
+            <button class="btn btn-secondary col-sm-5 m-1" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</div>

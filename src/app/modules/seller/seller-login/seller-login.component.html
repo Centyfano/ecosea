@@ -23,7 +23,6 @@
               </div>
             </div>
             
-            <div *ngIf="errors" class="invalid-feedback" [ngClass]="errors ? 'errors' : ''">{{usererror}}</div>
             <!-- <div class="invalid-feedback" [ngClass]="!errors ? 'errors' : ''">there are errors</div> -->
           </div>
         </div>
@@ -57,7 +56,10 @@
               </div>
             </div>
           </div>
+          <div *ngIf="errors" class="invalid-feedback" [ngClass]="errors ? 'errors' : ''">{{usererror}}</div>
         </div>
+        
+
         <!-- checkbox -->
         <div class="form-group form-check checkbox mb-3">
           <input

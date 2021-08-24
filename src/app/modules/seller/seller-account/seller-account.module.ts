@@ -29,13 +29,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { CreateProductComponent } from './seller-products/create-product/create-product.component';
 import { ProductDetailsComponent } from './seller-products/product-details/product-details.component';
+import { AddImagesComponent } from './seller-products/create-product/add-images/add-images.component';
 
 const routes: Routes = [
   { path: '', component: SellerAccountComponent },
   { path: 'sales', component: SellerSalesComponent },
   {
-    path: 'inbox',
-    component: SellerInboxComponent,
+    path: 'inbox', component: SellerInboxComponent,
     children: [
       { path: '', component: SellerChatListComponent },
       { path: 'chat', component: SellerChatComponent },
@@ -53,7 +53,13 @@ const routes: Routes = [
     children: [
       { path: '', component: SellerProductsComponent },
       { path: 'detail/:slug', component: ProductDetailsComponent },
-      { path: 'create', component: CreateProductComponent },
+      {
+        path: 'create',
+        children: [
+          { path: '', component: CreateProductComponent },
+          { path: 'add-images', component: AddImagesComponent },
+        ],
+      },
     ],
   },
   { path: 'delete', component: SellerAccountDeleteComponent },
@@ -81,6 +87,7 @@ const routes: Routes = [
     SellerSalesChartComponent,
     CreateProductComponent,
     ProductDetailsComponent,
+    AddImagesComponent,
   ],
   imports: [
     CommonModule,

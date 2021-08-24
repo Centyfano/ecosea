@@ -1,6 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from 'src/app/shared/helpers/must-match.validator';
+import { SellerAuthService } from '../../auth/seller-auth.service';
 
 @Component({
   selector: 'app-seller-password',
@@ -10,18 +12,24 @@ import { MustMatch } from 'src/app/shared/helpers/must-match.validator';
 export class SellerPasswordComponent implements OnInit {
   sellerPasswordResetForm!: FormGroup;
   submitted = false;
+  loaded = false;
+  passErr: any;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private sellerAuthService: SellerAuthService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.sellerPasswordResetForm = this.formBuilder.group(
       {
-        currentPassword: ['', Validators.minLength(6)],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', Validators.required],
+        current_password: ['', Validators.minLength(5)],
+        password: ['', [Validators.required, Validators.minLength(5)]],
+        password_confirmation: ['', Validators.required],
       },
       {
-        validators: [MustMatch('password', 'confirmPassword')],
+        validators: [MustMatch('password', 'password_confirmation')],
       }
     );
   }
@@ -38,5 +46,21 @@ export class SellerPasswordComponent implements OnInit {
     if (this.sellerPasswordResetForm.invalid) {
       return;
     }
+
+    console.log(this.sellerPasswordResetForm.value);
+    this.sellerAuthService
+      .changePassword(this.sellerPasswordResetForm.value)
+      .subscribe(
+        (res) => {
+          this.loaded = true;
+          this.location.back();
+        },
+        (err) => {
+          this.passErr =
+            err.errors.meta.current_password || err.errors.meta.password[0];
+          this.sellerPasswordResetForm.reset()
+          this.loaded = true;
+        }
+      );
   }
 }
